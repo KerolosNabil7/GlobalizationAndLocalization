@@ -1,3 +1,4 @@
+using System.Globalization;
 using GlobalizationAndLocalization.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,24 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// Define a list of supported cultures (languages) for the application.
+var cultures = new List<CultureInfo> {
+    new CultureInfo("en"),
+    new CultureInfo("fr")
+};
+// Configures localization middleware to handle culture settings based on the request.
+app.UseRequestLocalization(options => {
+
+    // Sets the default culture to English when no culture is specified in the request
+    options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en");
+
+    // List of cultures supported for formatting (numbers, dates, etc.)
+    options.SupportedCultures = cultures;
+
+    // List of cultures supported for UI strings (like resource file translations)
+    options.SupportedUICultures = cultures;
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
