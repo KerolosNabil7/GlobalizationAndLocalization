@@ -14,6 +14,19 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// Adds localization services to the container and sets the folder name where resource (.resx) files are stored.
+// In this case, all localization resource files should be placed inside a folder named "Resources"
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+// Adds MVC services to the application's dependency injection container
+builder.Services.AddMvc()
+    // Enables support for localized views.
+    // The 'Suffix' format means the framework will look for views like "Index.ar.cshtml" for Arabic, "Index.fr.cshtml" for French, etc.
+    .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+    // Enables localization of strings used in data annotation attributes (like [Required], [Display(Name = "...")])
+    .AddDataAnnotationsLocalization();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
